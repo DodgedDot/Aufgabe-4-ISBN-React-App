@@ -19,13 +19,14 @@ function App() {
 }
 
 function checkISBN(){
+  var isbn = require('node-isbn');
   var checkFeedback
   const inputFieldISBN = document.getElementById('inputFieldISBN')
   const userFeedback = document.getElementById('userFeedback') 
   const inputLength = inputFieldISBN.value.split('')
-  if(inputLength.length < 12){
+  if(inputLength.length === 10){
     checkFeedback = isbn10Checksum(inputFieldISBN.value)
-  } else{
+  } else if(inputLength.length === 13){
     checkFeedback = isbn13Checksum(inputFieldISBN.value)
   }
   //Uncaught Error: isbn13 does not contain 12 digits to calculate?
@@ -34,6 +35,12 @@ console.log(checkFeedback)
   if(checkFeedback === '0'){
     userFeedback.textContent = "ISBN is valid"
     userFeedback.style.color = "green"
+
+    isbn.resolve(inputFieldISBN.value).then(function (book) {
+        console.log('Book found %j', book);
+    }).catch(function (err) {
+        console.log('Book not found', err);
+    });
   } else{
     userFeedback.textContent = "ISBN is invalid"
     userFeedback.style.color = "red"
