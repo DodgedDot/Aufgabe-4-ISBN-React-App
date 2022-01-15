@@ -7,11 +7,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <input id="inputFieldISBN" type="text"></input>
         <button id="checkButton" onClick={checkISBN}>Check</button>
         <text id="userFeedback">Feedback</text>
-        
+        <text id="searchResult"></text>
+        <img id="bookCover"></img>
       </header>
     </div>
   );
@@ -23,7 +23,8 @@ function checkISBN(){
   var checkFeedback
   const inputFieldISBN = document.getElementById('inputFieldISBN')
   const userFeedback = document.getElementById('userFeedback')
-  const serchResult = document.getElementById('userFeedback')
+  const searchResult = document.getElementById('searchResult')
+  const imageResult = document.getElementById('bookCover')
   const inputArray = inputFieldISBN.value.split('')
   const copyInputArray = inputArray.map(x => x)
   copyInputArray.pop()
@@ -40,18 +41,12 @@ function checkISBN(){
 
     isbn.resolve(inputFieldISBN.value).then(function (book) {
         console.log('Book found %j', book);
-        return (
-          <div>
-            <text>
-            Titel des Buches:
-            Author des Buches: 
-            Kurze Zusammenfassung
-            Soweit vorhanden ein Bild des Buchcovers
-            </text>
-          </div>
-        );
-          
-        
+        const {title, description, authors, imageLinks} = book
+        searchResult.textContent =
+            `Titel des Buches:  ${title}` + '\n' +
+            `Author des Buches: ${authors}  
+            Kurze Zusammenfassung: ${description}`
+        imageResult.src = imageLinks    
     }).catch(function (err) {
         console.log('Book not found', err);
     });
