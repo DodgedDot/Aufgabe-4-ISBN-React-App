@@ -22,7 +22,8 @@ function checkISBN(){
   var isbn = require('node-isbn');
   var checkFeedback
   const inputFieldISBN = document.getElementById('inputFieldISBN')
-  const userFeedback = document.getElementById('userFeedback') 
+  const userFeedback = document.getElementById('userFeedback')
+  const serchResult = document.getElementById('userFeedback')
   const inputArray = inputFieldISBN.value.split('')
   const copyInputArray = inputArray.map(x => x)
   copyInputArray.pop()
@@ -39,6 +40,18 @@ function checkISBN(){
 
     isbn.resolve(inputFieldISBN.value).then(function (book) {
         console.log('Book found %j', book);
+        return (
+          <div>
+            <text>
+            Titel des Buches:
+            Author des Buches: 
+            Kurze Zusammenfassung
+            Soweit vorhanden ein Bild des Buchcovers
+            </text>
+          </div>
+        );
+          
+        
     }).catch(function (err) {
         console.log('Book not found', err);
     });
