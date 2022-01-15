@@ -23,16 +23,17 @@ function checkISBN(){
   var checkFeedback
   const inputFieldISBN = document.getElementById('inputFieldISBN')
   const userFeedback = document.getElementById('userFeedback') 
-  const inputLength = inputFieldISBN.value.split('')
-  if(inputLength.length === 10){
-    checkFeedback = isbn10Checksum(inputFieldISBN.value)
-  } else if(inputLength.length === 13){
-    checkFeedback = isbn13Checksum(inputFieldISBN.value)
+  const inputArray = inputFieldISBN.value.split('')
+  const copyInputArray = inputArray.map(x => x)
+  copyInputArray.pop()
+  const valueToCheck = copyInputArray.reduce((prevElement, currentElement) => { return prevElement + currentElement});
+  if(inputArray.length === 10){
+    checkFeedback = isbn10Checksum(valueToCheck)
+  } else if(inputArray.length === 13){
+    checkFeedback = isbn13Checksum(valueToCheck).toString()
   }
-  //Uncaught Error: isbn13 does not contain 12 digits to calculate?
-  //Input X as checknumber retruns NaN?
-console.log(checkFeedback)
-  if(checkFeedback === '0'){
+  
+  if(checkFeedback === inputArray.pop()){
     userFeedback.textContent = "ISBN is valid"
     userFeedback.style.color = "green"
 
@@ -41,6 +42,8 @@ console.log(checkFeedback)
     }).catch(function (err) {
         console.log('Book not found', err);
     });
+    //Ausgabe unter Input-Feld + React Symbol entfernen
+    //provider soll definiert werden
   } else{
     userFeedback.textContent = "ISBN is invalid"
     userFeedback.style.color = "red"
