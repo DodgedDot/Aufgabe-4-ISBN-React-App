@@ -55,14 +55,10 @@ function checkISBN(){
     }).catch(function (err) {
         console.log('Book not found', err);
     });
-    //Ausgabe unter Input-Feld + React Symbol entfernen
-    //provider soll definiert werden
   } else{
     userFeedback.textContent = "ISBN is invalid"
     userFeedback.style.color = "red"
   }
 }
-//export {checkISBN};
-//import checkISBN from './App.js';
 export default App;
 
