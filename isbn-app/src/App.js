@@ -10,7 +10,7 @@ function App() {
         <input id="inputFieldISBN" type="text"></input>
         <button id="checkButton" onClick={checkISBN}>Check</button>
         <text id="userFeedback">Feedback</text>
-        <text id="searchResult"></text>
+        <p id="searchResult"></p>
         <img id="bookCover"></img>
       </header>
     </div>
@@ -38,15 +38,19 @@ function checkISBN(){
   if(checkFeedback === inputArray.pop()){
     userFeedback.textContent = "ISBN is valid"
     userFeedback.style.color = "green"
+    imageResult.src = null
 
-    isbn.resolve(inputFieldISBN.value).then(function (book) {
-        console.log('Book found %j', book);
+    isbn.provider(['google']).resolve(inputFieldISBN.value).then(function (book) {
         const {title, description, authors, imageLinks} = book
         searchResult.textContent =
-            `Titel des Buches:  ${title}` + '\n' +
+            `Titel des Buches:  ${title}` +
             `Author des Buches: ${authors}  
             Kurze Zusammenfassung: ${description}`
-        imageResult.src = imageLinks    
+          if(imageLinks.thumbnail != undefined){
+            imageResult.src = imageLinks.thumbnail    
+          } else {
+            imageResult.src = null
+          }
     }).catch(function (err) {
         console.log('Book not found', err);
     });
